@@ -1,0 +1,42 @@
+package org.tankery.Protocol.Packets;
+
+import org.tankery.ClientSession;
+import org.tankery.Entity;
+import org.tankery.Main;
+import org.tankery.Protocol.Packet;
+import org.tankery.Protocol.PacketsHelper;
+import org.tankery.Utils.ByteBuf;
+
+import java.util.UUID;
+
+public class HandShakePacket extends Packet {
+    private String name;
+    public HandShakePacket() {}
+
+    @Override
+    public void read(ByteBuf buffer) {
+        this.name = buffer.readString();
+    }
+
+    @Override
+    public void process(ClientSession client) {
+        client.setUsername(this.name);
+        client.setUuid(UUID.randomUUID());
+        for (int i = -10; i <= 10; i++) {
+            for (int j = -10; j <= 10; j++) {
+                PacketsHelper.send(client, new AddMapObject(0, new float[]{i, -1, j}, new float[]{0, 0, 0}));
+            }
+        }
+
+        PacketsHelper.send(client, new AddMapObject(0, new float[]{3, 0, 3}, new float[]{0, 0, 0}));
+        PacketsHelper.send(client, new AddMapObject(0, new float[]{3, 0, 4}, new float[]{0, 0, 0}));
+        PacketsHelper.send(client, new AddMapObject(0, new float[]{3, 0, 5}, new float[]{0, 0, 0}));
+
+        Entity entity = new Entity(client.getUuid(), new float[]{0, 0, 0}, new float[]{0, 0, 0});
+        client.setEntity(entity);
+        for (ClientSession s : Main.sessions) {
+            PacketsHelper.send(s, new EntityAction(EntityAction.Action.Add, entity));
+            PacketsHelper.send(client, new EntityAction(EntityAction.Action.Add, client.getEntity()));
+        }
+    }
+}
