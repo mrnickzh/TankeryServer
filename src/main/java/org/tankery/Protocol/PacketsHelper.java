@@ -5,7 +5,6 @@ import org.tankery.ClientSession;
 import org.tankery.Protocol.Packets.AddMapObject;
 import org.tankery.Protocol.Packets.EntityAction;
 import org.tankery.Protocol.Packets.HandShakePacket;
-import org.tankery.Protocol.Packets.PlayerAuthInput;
 import org.tankery.Utils.ByteBuf;
 
 import java.nio.ByteBuffer;
@@ -19,7 +18,6 @@ public class PacketsHelper {
         packets.add(HandShakePacket.class);
         packets.add(AddMapObject.class);
         packets.add(EntityAction.class);
-        packets.add(PlayerAuthInput.class);
     }
 
     @SneakyThrows
