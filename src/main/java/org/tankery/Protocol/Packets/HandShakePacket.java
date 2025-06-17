@@ -35,8 +35,11 @@ public class HandShakePacket extends Packet {
         Entity entity = new Entity(client.getUuid(), new float[]{0, 0, 0}, new float[]{0, 0, 0});
         client.setEntity(entity);
         for (ClientSession s : Main.sessions) {
-            PacketsHelper.send(s, new EntityAction(EntityAction.Action.Add, entity));
-            PacketsHelper.send(client, new EntityAction(EntityAction.Action.Add, client.getEntity()));
+            if (!s.equals(client)) {
+                PacketsHelper.send(s, new EntityAction(EntityAction.Action.Add, entity));
+                PacketsHelper.send(client, new EntityAction(EntityAction.Action.Add, s.getEntity()));
+                PacketsHelper.send(client, new PlayerAuthInput(s.getEntity()));
+            }
         }
     }
 }
