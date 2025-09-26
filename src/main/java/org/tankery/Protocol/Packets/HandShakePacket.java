@@ -22,11 +22,7 @@ public class HandShakePacket extends Packet {
     public void process(ClientSession client) {
         client.setUsername(this.name);
         client.setUuid(UUID.randomUUID());
-        for (int i = -10; i <= 10; i++) {
-            for (int j = -10; j <= 10; j++) {
-                PacketsHelper.send(client, new AddMapObject(0, new float[]{i, -1, j}, new float[]{0, 0, 0}));
-            }
-        }
+        PacketsHelper.send(client, new AddMapObject(1, new float[]{0, 0, 0}, new float[]{0, 0, 0}));
 
         PacketsHelper.send(client, new AddMapObject(0, new float[]{3, 0, 3}, new float[]{0, 0, 0}));
         PacketsHelper.send(client, new AddMapObject(0, new float[]{3, 0, 4}, new float[]{0, 0, 0}));
